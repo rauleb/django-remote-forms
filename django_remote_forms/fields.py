@@ -1,7 +1,7 @@
 import datetime
 
 from django.conf import settings
-from django.utils.datastructures import SortedDict
+from collections import OrderedDict
 
 from django_remote_forms import logger, widgets
 
@@ -24,7 +24,7 @@ class RemoteField(object):
         self.form_initial_data = form_initial_data
 
     def as_dict(self):
-        field_dict = SortedDict()
+        field_dict = OrderedDict()
         field_dict['title'] = self.field.__class__.__name__
         field_dict['required'] = self.field.required
         field_dict['label'] = self.field.label
@@ -39,7 +39,7 @@ class RemoteField(object):
         try:
             remote_widget_class = getattr(widgets, remote_widget_class_name)
             remote_widget = remote_widget_class(self.field.widget, field_name=self.field_name)
-        except Exception, e:
+        except Exception as e:
             logger.warning('Error serializing %s: %s', remote_widget_class_name, str(e))
             widget_dict = {}
         else:
