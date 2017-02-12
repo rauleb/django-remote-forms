@@ -19,23 +19,28 @@ class RemoteForm(object):
 
         # Make sure all passed field lists are valid
         if self.excluded_fields and not (self.all_fields >= self.excluded_fields):
-            logger.warning('Excluded fields %s are not present in form fields' % (self.excluded_fields - self.all_fields))
+            logger.warning(
+                'Excluded fields %s are not present in form fields' % (self.excluded_fields - self.all_fields))
             self.excluded_fields = set()
 
         if self.included_fields and not (self.all_fields >= self.included_fields):
-            logger.warning('Included fields %s are not present in form fields' % (self.included_fields - self.all_fields))
+            logger.warning(
+                'Included fields %s are not present in form fields' % (self.included_fields - self.all_fields))
             self.included_fields = set()
 
         if self.readonly_fields and not (self.all_fields >= self.readonly_fields):
-            logger.warning('Readonly fields %s are not present in form fields' % (self.readonly_fields - self.all_fields))
+            logger.warning(
+                'Readonly fields %s are not present in form fields' % (self.readonly_fields - self.all_fields))
             self.readonly_fields = set()
 
         if self.ordered_fields and not (self.all_fields >= set(self.ordered_fields)):
-            logger.warning('Readonly fields %s are not present in form fields' % (set(self.ordered_fields) - self.all_fields))
+            logger.warning(
+                'Readonly fields %s are not present in form fields' % (set(self.ordered_fields) - self.all_fields))
             self.ordered_fields = []
 
         if self.included_fields | self.excluded_fields:
-            logger.warning('Included and excluded fields have following fields %s in common' % (set(self.ordered_fields) - self.all_fields))
+            logger.warning('Included and excluded fields have following fields %s in common' % (
+            set(self.ordered_fields) - self.all_fields))
             self.excluded_fields = set()
             self.included_fields = set()
 
@@ -43,7 +48,7 @@ class RemoteForm(object):
         self.excluded_fields |= (self.included_fields - self.all_fields)
 
         if not self.ordered_fields:
-            if self.form.fields.keyOrder:
+            if hasattr(self.form.fields, 'keyOrder'):
                 self.ordered_fields = self.form.fields.keyOrder
             else:
                 self.ordered_fields = self.form.fields.keys()
